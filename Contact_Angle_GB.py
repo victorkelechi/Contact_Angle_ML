@@ -188,13 +188,20 @@ print(f" Model saved as: {model_file}\n")
 with open(model_file, "rb") as f_in:
     model_ = pickle.load(f_in)
 
-# Predict on Test Data
-test_pred = model_.predict(test)
-Prediction = pd.DataFrame({
-    "id": test.index,
-    "contact_angle": test_pred
-})
+# Predict on unseen data
+def predict_contact_angle(data):
+    y_pred = model_.predict(data)
+    # convert to numpy array of floats
+    y_pred = np.array(y_pred, dtype=float)
 
-Prediction.to_csv("contact_angle_predictions.csv", index=False)
-print("Predictions saved to 'contact_angle_predictions.csv'\n")
-print(Prediction.head())
+    # Determine number of samples
+    if isinstance(data, pd.DataFrame):
+        ids = data.index
+    elif isinstance(data, (np.ndarray,list)):
+        ids = range(len(data))
+    elif isinstance(data, dict):
+        ids = range(len(next(iter(data.values()))))
+    else:
+        raise ValueError("Unsupported data type for prediction.")
+    
+    return pd.DataFrame({"id": ids, "contact_angle": y_pred})

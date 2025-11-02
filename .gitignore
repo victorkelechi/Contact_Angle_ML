@@ -1,0 +1,11 @@
+# Files to ignore
+Dominion.csv
+contact_angle_predictions.csv
+ping.py
+Untitled.ipynb
+Contact_Angle_GB.ipynb
+Copy_of_starter_notebook(1).ipynb
+Pipfile
+Pipfile.lock
+Test.csv
+Train.csv
